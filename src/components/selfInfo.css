@@ -1,0 +1,40 @@
+.selfInfoBody{
+    margin-left: 15%;
+    margin-right: 3%;
+    margin-top: 1%;
+}
+
+.header{
+    justify-content: center;
+    text-align: center;
+    font-weight: bolder;
+    color: navy;
+    margin-top: 7%;
+}
+
+
+@media screen and (max-width: 650px) {
+    .selfInfoBody{
+        margin-left: 0;
+      
+    }
+    
+  
+  }
+  @media screen and (max-width: 400px) {
+    
+    .selfInfoBody{
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .header{
+        justify-content: center;
+        text-align: center;
+        font-weight: bolder;
+        color: navy;
+        margin-top: 30%;
+    }
+    
+  
+  }

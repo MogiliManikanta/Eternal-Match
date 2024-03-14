@@ -1,0 +1,356 @@
+import React,{useState} from 'react'
+import './Login.css'
+import { Link, useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "./firebase";
+import { addDoc, getFirestore } from "firebase/firestore";
+import { collection, setDoc,doc } from "firebase/firestore"; 
+import { app } from './firebase';
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  listAll,
+  list,
+} from "firebase/storage";
+import { storage } from "./firebase";
+import { getAuth} from "firebase/auth";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Form from 'react-bootstrap/Form';
+
+const firestore = getFirestore(app)
+
+const storageRef = ref(storage);
+
+function Signup() {
+
+  const navigate = useNavigate();
+
+  const toastSuccess2 = () => toast.success('Signed up successfully!');
+  const toastError2 = () => toast.error('Signup failed!');
+  const validationError2 = () => toast.error('Please fill all fields!');
+  const validation2Error2 = () => toast.error('Invalid credentials!');
+   
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageUrl, setImageUrl] = useState("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf2hw0Mq5YNF3BFKPHP5WBxrAOAl1_MdYPxQ&usqp=CAU");
+
+
+  const delay = ms => new Promise(
+    resolve => setTimeout(resolve, ms)
+  );
+
+  const [username2, setUserName2] = useState("");
+  const [email2, setEmail2] = useState("");
+  const [role,setRole] = useState("user");
+  const [password2, setPassword2] = useState("");
+  const [errorMsg2, setErrorMsg2] = useState("");
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+
+
+
+ 
+
+
+
+  const writeData =  async (e) =>{
+
+    if(role === "admin"){
+
+      
+  const userRef = collection(firestore, `admins`);
+  
+  await setDoc(doc(userRef, `${username}`), {
+    username:username,
+    email:email,
+    password:password,
+    fullName:"",
+    dob:"",
+    gender:"",
+    phone:"",
+    role:role,
+    url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf2hw0Mq5YNF3BFKPHP5WBxrAOAl1_MdYPxQ&usqp=CAU"
+});
+
+
+    }else{
+
+      const userRef = collection(firestore, `users`);
+  
+      await setDoc(doc(userRef, `${username}`), {
+        username:username,
+        email:email,
+        password:password,
+        active:true,
+        role:role,
+        fullName:"",
+        dob:"",
+        pob:"",
+        gender:"",
+        phone:"",
+        height:"",
+        collegeName:"",
+        yop:"",
+        degree:"",
+        percent:"",
+        school12:"",
+        yop12:"",
+        board12:"",
+        percent12:"",
+        school10:"",
+        yop10:"",
+        board10:"",
+        percent10:"",
+        workplace:"",
+        income:"",
+        contact:"",
+        currentcompany:"",
+        position:"",
+        from:"",
+        to:"",
+        recentcompany1:"",
+        position1:"",
+        from1:"",
+        to1:"",
+        recentcompany2:"",
+        position2:"",
+        from2:"",
+        to2:"",
+        fathersName:"",
+        mothersName:"",
+        fatherOccupation:"",
+        motherOccupation:"",
+        familyLives:"",
+        familyType:"",
+        fatherincome:"",
+        motherincome:"",
+        fatheremploymentstatus:"",
+        motheremploymentstatus:"",
+        religion:"",
+        caste:"",
+        subcaste:"",
+        rashi:"",
+        manglikstatus:"",
+        connections:[],
+        sentrequests:[],
+        receivedrequests:[],
+        marryconnections:[],
+        marrysent:[],
+        marryreceived:[],
+        url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf2hw0Mq5YNF3BFKPHP5WBxrAOAl1_MdYPxQ&usqp=CAU"
+    });
+    
+
+    }
+
+   }
+
+
+  let handleSubmit =  (e) => {
+    e.preventDefault();
+
+    if (!username || !email || !password ) {
+      setErrorMsg("Fill all fields");
+      return;
+    }
+    setErrorMsg("");
+    setSubmitButtonDisabled(true);
+
+    createUserWithEmailAndPassword(auth, email,password)
+    .then(async (res) => {
+      setSubmitButtonDisabled(false);
+      toastSuccess()
+      const user = res.user;
+      // console.log(user);
+      // writeData();
+
+      if(role === "admin"){
+
+      
+        const userRef = collection(firestore, `admins`);
+        
+        await setDoc(doc(userRef, `${username}`), {
+          username:username,
+          email:email,
+          password:password,
+          fullName:"",
+          dob:"",
+          gender:"",
+          phone:"",
+          role:role,
+          url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf2hw0Mq5YNF3BFKPHP5WBxrAOAl1_MdYPxQ&usqp=CAU"
+      });
+      
+      
+          }else{
+      
+            const userRef = collection(firestore, `users`);
+        
+            await setDoc(doc(userRef, `${username}`), {
+              username:username,
+              email:email,
+              password:password,
+              active:true,
+              role:role,
+              fullName:"",
+              dob:"",
+              pob:"",
+              gender:"",
+              phone:"",
+              height:"",
+              collegeName:"",
+              yop:"",
+              degree:"",
+              percent:"",
+              school12:"",
+              yop12:"",
+              board12:"",
+              percent12:"",
+              school10:"",
+              yop10:"",
+              board10:"",
+              percent10:"",
+              workplace:"",
+              income:"",
+              contact:"",
+              currentcompany:"",
+              position:"",
+              from:"",
+              to:"",
+              recentcompany1:"",
+              position1:"",
+              from1:"",
+              to1:"",
+              recentcompany2:"",
+              position2:"",
+              from2:"",
+              to2:"",
+              fathersName:"",
+              mothersName:"",
+              fatherOccupation:"",
+              motherOccupation:"",
+              familyLives:"",
+              familyType:"",
+              fatherincome:"",
+              motherincome:"",
+              fatheremploymentstatus:"",
+              motheremploymentstatus:"",
+              religion:"",
+              caste:"",
+              subcaste:"",
+              rashi:"",
+              manglikstatus:"",
+              connections:[],
+              sentrequests:[],
+              receivedrequests:[],
+              marryconnections:[],
+              marrysent:[],
+              marryreceived:[],
+              url:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf2hw0Mq5YNF3BFKPHP5WBxrAOAl1_MdYPxQ&usqp=CAU"
+          });
+          
+      
+          }
+    
+
+      if(role == "admin"){
+        await updateProfile(user, {
+          displayName: username,
+          photoURL:"admin"  
+          
+        });
+
+   
+
+      }else{
+        await updateProfile(user, {
+          displayName: username,
+          
+        });
+
+    
+
+      }
+
+      // navigate('/')
+    
+      if(res.user.photoURL == "admin"){
+        await delay(1000);
+        navigate("/dashboard2");
+      } else{
+        await delay(1000);
+        navigate("/dashboard");
+      };
+
+      
+    })
+    .catch((err) => {
+      setSubmitButtonDisabled(false);
+      // setErrorMsg(err.message);
+      toastError();
+    });
+
+ 
+  };
+
+
+  return (
+    <div>
+      <div className="lcontainer1">
+    <div className="title">Signup</div>
+    <div className="content33">
+      <form action="#">
+        <div className="user-details1">
+          <div className="input-box1">
+            <span>Username</span>
+            <input type="text" placeholder="Enter your username" required value={username}  onChange={(e) => setUserName(e.target.value)} name="username"  />
+          </div>
+          <div className="input-box1">
+            <span>Email</span>
+            <input type="email" placeholder="Enter your email" required  value={email}  onChange={(e) => setEmail(e.target.value)} name="email" />
+          </div>
+         
+          <div className="input-box1">
+            <span>Password</span>
+            <input type="password" placeholder="Enter your password" required value={password}  onChange={(e) => setPassword(e.target.value)} name="password"/>
+          </div>
+
+          <input type="file"  onChange={(event) => {
+          setImageUpload(event.target.files[0]);
+          }} />
+
+
+   {/* <select className="form-select input-box1" required value={role} onChange={(e) => setRole(e.target.value)} name="role" aria-label="Default select example">
+      <option selected>Select role</option>
+      <option value="user">user</option>
+      <option value="admin">admin</option>
+    </select> */}
+      
+
+          <p className="errormsg">{errorMsg}</p>
+
+          <div className="button">
+            <input type="submit" defaultValue="Register" disabled={submitButtonDisabled} onClick={handleSubmit} /><br /><br/>
+
+            
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+            />
+
+            <span className="text1">Already Have An Account? &nbsp;
+              <Link to="/login" className="login-link">Login</Link>
+            </span>
+          </div>
+
+          {/* <button type='submit' onClick={uploadImage}> upload </button> <br /> */}
+
+
+        </div></form>
+    </div>
+  </div>
+    </div>
+  )
+}
+
+export default Signup
